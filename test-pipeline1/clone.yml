@@ -1,0 +1,25 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: clonetask
+spec:
+  params:
+    - name: repo-url
+      description: url of git repo you want to clone
+      type: string
+      default: https://github.com/rushikeshkulat95/DA_1st_assignment.git
+    - name: branch
+      description: branch of repo you want to clone
+      type: string
+      default: master
+  workspaces:
+    - name: source
+  steps:
+    - name: git-repo-clone-task
+      image: alpine/git
+      workingDir: $(workspaces.source.path)
+      script: |
+        git config --global --add safe.directory ./source
+        git clone $(params.repo-url) ./source
+        cd ./source
+        git checkout $(params.branch)

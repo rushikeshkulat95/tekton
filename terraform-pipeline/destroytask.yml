@@ -1,0 +1,15 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: destroytask
+spec:
+  workspaces:
+    - name: source
+  steps:
+    - name: destroy-task
+      image: hashicorp/terraform
+      workingDir: $(workspaces.source.path)/source
+      command:
+        - terraform
+        - destroy
+        - -auto-approve

@@ -1,0 +1,16 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: newpod
+spec:
+  containers:
+  - name: newpod
+    image: nginx:latest
+    volumeMounts:
+      - name: newpod
+        mountPath: "/temp/per"
+  volumes:
+    - name: newpod
+      persistentVolumeClaim:
+        claimName: tekton-pvc
+    

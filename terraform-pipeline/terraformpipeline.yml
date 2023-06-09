@@ -1,0 +1,65 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: terraformpipeline
+spec:
+  workspaces:
+    - name: codebase
+  tasks:
+    - name: repo-clone
+      workspaces:
+        - name: source
+          workspace: codebase
+      params:
+        - name: repo-url
+          value: https://github.com/rushikeshkulat95/DA_1st_assignment.git
+      taskRef:
+        name: clonetask
+
+    - name: init
+      runAfter:
+        - repo-clone
+      workspaces:
+        - name: source
+          workspace: codebase
+      taskRef:
+        name: inittask
+
+    - name: plan
+      runAfter:
+        - init
+      workspaces:
+        - name: source
+          workspace: codebase
+      taskRef:
+        name: plantask
+
+    - name: apply
+      runAfter:
+        - plan
+      workspaces:
+        - name: source
+          workspace: codebase
+      taskRef:
+        name: applytask   
+
+    - name: destroy
+      runAfter:
+        - apply
+      workspaces:
+        - name: source
+          workspace: codebase
+      taskRef:
+        name: destroytask
+    
+    
+    - name: cleanup
+      runAfter:
+        - destroy
+      workspaces:
+        - name: source
+          workspace: codebase
+      taskRef:
+        name: cleanup
+          
+

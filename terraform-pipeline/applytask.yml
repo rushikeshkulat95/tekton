@@ -1,0 +1,15 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: applytask
+spec:
+  workspaces:
+    - name: source
+  steps:
+    - name: apply-task
+      image: hashicorp/terraform
+      workingDir: $(workspaces.source.path)/source
+      command:
+        - terraform
+        - apply
+        - -auto-approve

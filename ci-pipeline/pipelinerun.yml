@@ -1,0 +1,16 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  name: terraformpipelinerun
+spec:
+  workspaces:
+    - name: maven-settings
+      emptyDir: {}
+    - name: sonar-settings
+      emptyDir: {}
+    - name: codebase
+      persistentVolumeClaim:
+        claimName: tekton-pvc
+  pipelineRef:
+    name: pipeline
+  

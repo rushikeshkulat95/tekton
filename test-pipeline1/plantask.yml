@@ -1,0 +1,17 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: plantask
+spec:
+  workspaces:
+    - name: source
+  steps:
+    - name: plan-task
+      image: hashicorp/terraform
+      workingDir: $(workspaces.source.path)/source
+      envFrom:
+        - secretRef:
+            name: terraform-secret
+      command:
+        - terraform
+        - plan
